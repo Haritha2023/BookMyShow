@@ -1,0 +1,178 @@
+                      ============
+                        BOOK MY SHOW
+                    ============
+github link: https://github.com/mrinal1224/BookMyShow_FebDec/tree/main/project
+
+FRONTEND --- React, Antd, Redux
+BACKEND --- express with nodejs
+Database --- MangoDB with mongoose(Altas)
+payment --- stripe payment getway
+Deploy --- Renders
+
+            -----------------
+            React Installation
+            ------------------
+1. create client folder open terminal
+    --npx create-react-app .
+    WITHOUT FOLDER npx create-react-app client
+    -- remove all code in App.js and app.css
+2. npm install react-router-dom
+    <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </BrowserRouter>
+3. npm install antd for styling
+
+                -------------------
+                Server Installation
+                -------------------
+1. npm init -- globally means in BMS folder
+    --it will create package.json folder
+  npm install nodemon -- to run the Server
+    --it will create package-lock.json folder
+  npm install mongoose express mongodb
+
+  --need to create index.js in server folder
+  --create mongodb database project and connect
+
+  dburl = mongodb+srv://yanamadalaharitha:<password>@cluster0.kqy9kvk.mongodb.net/?retryWrites=true&w=majority
+  password = KAwc5xsg1i960CqG
+
+WE SHOULD NOT SHOW PASSWORD AND URL IN GITHUB, IF NOT IT WILL BE MISS USE
+THATS WHY WE USE .env file
+--npm install dotenv
+
+                const express = require("express");
+
+                require("dotenv").config();
+
+                const dbConfig = require("./config/dbConfig");
+                const app = express();
+
+                const PORT = 8088;
+
+                app.listen(PORT, () => {
+                  console.log("server running");
+                });
+
+
+https://auth0.com/blog/adding-salt-to-hashing-a-better-way-to-store-passwords/
+https://www.npmjs.com/package/nodemailer
+https://react.email/docs/integrations/nodemailer
+
+20/2/24
+=======
+bcrypt is npm package for password hashings
+
+salt is a set of characters which will be attached with the password, 
+which number you have provide that many times password will be hashing
+
+=====================================================================
+              SYNCHRONIZING FRONTEND WITH BACKEND
+====================================================================
+1. add "proxy": "http://localhost:8088" in client package.json
+2. npm install axios
+3. create axios instance
+4. in index.js 
+const { axiosInstance } = require("./index");
+
+  CREATE INSTANCE - CALLS/INDEX.JS
+const axiosInstance = axios.create({
+    headers: {
+        "Content-Type": "application/json"
+    }
+})
+
+//NEED TO CREATE REGISTERUSER ENDPOINT IN "user.js"
+export const RegisterUser = async (value) => {
+  try {
+    const response = await axiosInstance.post("/api/users/register", value);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+////GET DATA FROM REGISTER.JS
+const onSubmit = async (values) => {
+    console.log(values);
+    try {
+      const response = await RegisterUser(values);
+      if (response.success) {
+        message.success(response.message);
+      } else {
+        message.error(response.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+ <Form layout="vertical" onFinish={onSubmit}>
+
+ onFinish is the inbuilt feature of antd
+ by default onFinish will put all data in object
+
+///// GOTO USER.JS CREATE ONE ENDPOINT axiosInstance.post("/api/users/register", value)
+
+WHENEVER WE SUBMIT THE REGISTER, they should be treated as body database
+
+RegisterUser will receive all the values 
+
+        CLICKING ON SIGNUP
+-form submitted values generated name,email,password
+-these values will be going to RegisterUser posting to backed register api 
+- userRegister is saved the user
+
+======================================================
+    STEPS SEND LOGIN DETAILS TO BACKEND
+======================================================
+-> create LoginUser in user.js
+-> send login details through onFinish to LoginUser 
+-> LoginUser "axiosInstance post" to api/user/login api backend
+  this is hitting particular api and sending data
+-> if it is success for email and password, it will navigate Home page
+-> Homw page using useNavigate
+=============================================================
+
+-if app is asking for login again and again that is bad ux
+-it increases load in the server
+
+-JSON WEB TOKEN will solve this problem
+
+==========================================================
+              JWT - JSON Web Token
+=========================================================
+airport-parkingticket- 1hr
+application- Token- expiry
+
+we create a signature with JWT than is token 
+
+        STEPS TO CREATE JWT TOKEN
+-install npm i jsonwebtoken
+-goto routes userRoutes const jwt = require('jsonwebtoken');
+- we need digital signature that is JWT secret, create in .env file
+-secret_key_jwt= bookmyshowscaler
+-go to userRoutes 
+  const token = jwt.sign({ userId: user._id }, process.env.secret_key_jwt, {expiresIn: "1d"});
+-check token created or not in postman
+-copy token and paste in jwt.io 
+-check token given id and login account id
+-need to send token in frontend 
+-goto login.js, after secess localStorage.setItem("token", response.token)
+-check token given in localstroage after login
+-now token is in client we can compare if it exist user then will go server
+-IT WILL SAVE SERVERLOAD
+-IF TOKEN IS SAME IN CLIENT NO NEED TO COMPARE EMAIL AND PASSWORD IN SERVER
+
+--need to send this token in client index.js 
+
+
+when we login 
+
+https://github.com/mrinal1224/BookMyShow_FebDec/tree/ac51def8a319a5e278aff3bec4ec982d116d7b65/project
+
+https://blog.bitsrc.io/javascript-require-vs-import-47827a361b77
