@@ -6,12 +6,14 @@ import { showLoading, hideLoading } from "../../redux/loaderSlice";
 import { getAllMovies } from "../../calls/movies";
 import moment from "moment";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import DeleteMovieModal from "./DeleteMovieModal";
 
 function MovieList() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [formType, setFormType] = useState("add");
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const dispatch = useDispatch();
   const getData = async () => {
     //this function will get all the movies
@@ -92,7 +94,12 @@ function MovieList() {
             >
               <EditOutlined />
             </Button>
-            <Button>
+            <Button
+              onClick={() => {
+                setIsDeleteModalOpen(true);
+                setSelectedMovie(data);
+              }}
+            >
               <DeleteOutlined />
             </Button>
           </div>
@@ -125,6 +132,16 @@ function MovieList() {
           setIsModalOpen={setIsModalOpen}
           selectedMovie={selectedMovie}
           formType={formType}
+          setSelectedMovie={setSelectedMovie}
+          getData={getData}
+        />
+      )}
+
+      {isDeleteModalOpen && (
+        <DeleteMovieModal
+          isDeleteModalOpen={isDeleteModalOpen}
+          selectedMovie={selectedMovie}
+          setIsDeleteModalOpen={setIsDeleteModalOpen}
           setSelectedMovie={setSelectedMovie}
           getData={getData}
         />

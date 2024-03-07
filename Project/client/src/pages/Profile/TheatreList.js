@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Table, Button, message } from "antd";
-
+import TheatreFormModal from "./TheatreFormModal";
+import DeleteTheatreModal from "./DeleteTheatreModal";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import { getAllTheatresForAdmin } from "../../calls/theatres";
+import { getAllTheatres } from "../../calls/theatres";
 import { useSelector, useDispatch } from "react-redux";
 import { showLoading, hideLoading } from "../../redux/loaderSlice";
+import ShowModal from "./ShowModal";
 
-const TheatresTable = () => {
+const TheatreList = () => {
   const { user } = useSelector((state) => state.user);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  // const [isShowModalOpen, setIsShowModalOpen] = useState(false);
+  const [isShowModalOpen, setIsShowModalOpen] = useState(false);
   const [selectedTheatre, setSelectedTheatre] = useState(null);
   const [formType, setFormType] = useState("add");
   const [theatres, setTheatres] = useState(null);
@@ -19,7 +21,7 @@ const TheatresTable = () => {
   const getData = async () => {
     try {
       dispatch(showLoading());
-      const response = await getAllTheatresForAdmin({ owner: user._id });
+      const response = await getAllTheatres({ owner: user._id });
       if (response.success) {
         const allTheatres = response.data;
         console.log(allTheatres);
@@ -93,7 +95,16 @@ const TheatresTable = () => {
             >
               <DeleteOutlined />
             </Button>
-            {/* { data.isActive && <Button onClick={ () => { setIsShowModalOpen(true); setSelectedTheatre(data); }}>+ Shows</Button> } */}
+            {data.isActive && (
+              <Button
+                onClick={() => {
+                  setIsShowModalOpen(true);
+                  setSelectedTheatre(data);
+                }}
+              >
+                + Shows
+              </Button>
+            )}
           </div>
         );
       },
@@ -106,9 +117,46 @@ const TheatresTable = () => {
 
   return (
     <>
+      <div className="d-flex justify-content-end">
+        <Button
+          type="primary"
+          onClick={() => {
+            setIsModalOpen(true);
+            setFormType("add");
+          }}
+        >
+          Add Theatre
+        </Button>
+      </div>
       <Table dataSource={theatres} columns={columns} />
+      {isModalOpen && (
+        <TheatreFormModal
+          isModalOpen={isModalOpen}
+          selectedTheatre={selectedTheatre}
+          setSelectedTheatre={setSelectedTheatre}
+          setIsModalOpen={setIsModalOpen}
+          formType={formType}
+          getData={getData}
+        />
+      )}
+      {isDeleteModalOpen && (
+        <DeleteTheatreModal
+          isDeleteModalOpen={isDeleteModalOpen}
+          selectedTheatre={selectedTheatre}
+          setIsDeleteModalOpen={setIsDeleteModalOpen}
+          setSelectedTheatre={setSelectedTheatre}
+          getData={getData}
+        />
+      )}
+      {isShowModalOpen && (
+        <ShowModal
+          isShowModalOpen={isShowModalOpen}
+          setIsShowModalOpen={setIsShowModalOpen}
+          selectedTheatre={selectedTheatre}
+        />
+      )}
     </>
   );
 };
 
-export default TheatresTable;
+export default TheatreList;

@@ -3,7 +3,7 @@ import TextArea from "antd/es/input/TextArea";
 import { showLoading, hideLoading } from "../../redux/loaderSlice";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { addMovie } from "../../calls/movies";
+import { addMovie, updateMovie } from "../../calls/movies";
 import moment from "moment";
 
 function MovieForm({
@@ -16,12 +16,20 @@ function MovieForm({
   const dispatch = useDispatch();
   const handleCancel = () => {
     setIsModalOpen(false);
+    setSelectedMovie(null);
   };
 
   const onFinish = async (values) => {
     try {
       dispatch(showLoading());
-      const response = await addMovie(values);
+      let response = null;
+      if (formType === "add") {
+        response = await addMovie(values);
+        setSelectedMovie(null);
+      } else {
+        response = await updateMovie({ ...values, movieId: selectedMovie._id });
+        setSelectedMovie(null);
+      }
       dispatch(hideLoading());
       if (response.success) {
         message.success(response.message);

@@ -1,4 +1,4 @@
-const { axiosInstance } = require("./index");
+import { axiosInstance } from "./index";
 
 //Add a movie
 
@@ -22,5 +22,37 @@ export const getAllMovies = async () => {
     return response.data;
   } catch (error) {
     console.error(error);
+  }
+};
+
+//update movie
+export const updateMovie = async (payload) => {
+  try {
+    const response = await axiosInstance.put(
+      "/api/movies/update-movie",
+      payload
+    );
+    console.log(response.data);
+
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return error.message;
+  }
+};
+
+//delete movie
+export const deleteMovie = async (payload) => {
+  try {
+    const response = await axiosInstance.put(
+      "/api/movies/delete-movie",
+      payload
+    );
+    console.log(response.data);
+
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return error.message;
   }
 };
