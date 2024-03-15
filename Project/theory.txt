@@ -182,3 +182,5 @@ after refreshing only changes visible
 https://chat.openai.com/g/g-L7uFzapJb-javascript-mentor
 
 https://github.com/mrinal1224/BookMyShow_FebDec
+
+ WE HAVE USED "PROTECTEDROUTE" FOR CHECK THE USER IS REGISTERED  OR NOT

@@ -71,5 +71,22 @@ router.put("/delete-movie", async (req, res) => {
     });
   }
 });
+
+// Fetch single movie by id
+router.get("/movie/:id", async (req, res) => {
+  try {
+    const movie = await Movie.findById(req.params.id);
+    res.send({
+      success: true,
+      message: "Movie fetched successfully!",
+      data: movie,
+    });
+  } catch (err) {
+    res.send({
+      success: false,
+      message: err.message,
+    });
+  }
+});
 //update the movie, delete the movie, update the movie
 module.exports = router;
