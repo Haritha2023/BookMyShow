@@ -176,3 +176,11 @@ when we login
 https://github.com/mrinal1224/BookMyShow_FebDec/tree/ac51def8a319a5e278aff3bec4ec982d116d7b65/project
 
 https://blog.bitsrc.io/javascript-require-vs-import-47827a361b77
+
+after refreshing only changes visible
+
+https://chat.openai.com/g/g-L7uFzapJb-javascript-mentor
+
+https://github.com/mrinal1224/BookMyShow_FebDec
+
+ WE HAVE USED "PROTECTEDROUTE" FOR CHECK THE USER IS REGISTERED  OR NOT

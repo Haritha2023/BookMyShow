@@ -1,11 +1,70 @@
 import { Col, Modal, Row, Form, Input, Select, Button, message } from "antd";
 import TextArea from "antd/es/input/TextArea";
+import { showLoading, hideLoading } from "../../redux/loaderSlice";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { addMovie, updateMovie } from "../../calls/movies";
+import moment from "moment";
 
-function MovieForm() {
+function MovieForm({
+  isModalOpen,
+  setIsModalOpen,
+  selectedMovie,
+  setSelectedMovie,
+  formType,
+}) {
+  const dispatch = useDispatch();
+  const handleCancel = () => {
+    setIsModalOpen(false);
+    setSelectedMovie(null);
+  };
+
+  const onFinish = async (values) => {
+    try {
+      dispatch(showLoading());
+      let response = null;
+      if (formType === "add") {
+        response = await addMovie(values);
+        setSelectedMovie(null);
+      } else {
+        response = await updateMovie({ ...values, movieId: selectedMovie._id });
+        setSelectedMovie(null);
+      }
+      dispatch(hideLoading());
+      if (response.success) {
+        message.success(response.message);
+      } else {
+        message.error(response.message);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+    setIsModalOpen(false);
+    // setMovies(movies);
+  };
+
+  if (selectedMovie) {
+    selectedMovie.releaseDate = moment(selectedMovie.releaseDate).format(
+      "YYYY-MM-DD"
+    );
+  }
+  console.log("This is from form selectedMovie", selectedMovie);
   return (
-    <div>
-      <Form layout="vertical" style={{ width: "100%" }}>
+    <Modal
+      centered
+      title={formType === "add" ? "Add Movie" : "Edit Movie"}
+      open={isModalOpen}
+      onCancel={handleCancel}
+      width={800}
+      footer={null}
+      formType={formType}
+    >
+      <Form
+        layout="vertical"
+        style={{ width: "100%" }}
+        initialValues={selectedMovie}
+        onFinish={onFinish}
+      >
         <Row
           gutter={{
             xs: 6,
@@ -181,12 +240,12 @@ function MovieForm() {
           >
             Submit the Data
           </Button>
-          <Button className="mt-3" block>
+          <Button className="mt-3" block onClick={handleCancel}>
             Cancel
           </Button>
         </Form.Item>
       </Form>
-    </div>
+    </Modal>
   );
 }
 
