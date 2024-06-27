@@ -75,7 +75,7 @@ which number you have provide that many times password will be hashing
 ====================================================================
 1. add "proxy": "http://localhost:8088" in client package.json
 2. npm install axios
-3. create axios instance
+3. create axios instancer
 4. in index.js 
 const { axiosInstance } = require("./index");
 
