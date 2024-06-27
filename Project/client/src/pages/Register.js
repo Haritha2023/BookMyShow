@@ -1,16 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Button, Form, Input, message } from "antd";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { RegisterUser } from "../calls/users";
-import { Radio } from "antd";
-
 function Register() {
-  const [isAdmin, setIsAdmin] = useState(false);
-  const navigate = useNavigate;
-  const onChange = (e) => {
-    console.log("radio checked", e.target.value);
-    setIsAdmin(e.target.value);
-  };
   const onSubmit = async (values) => {
     console.log(values);
     try {
@@ -24,12 +16,6 @@ function Register() {
       console.log(error);
     }
   };
-  useEffect(() => {
-    if (localStorage.getItem("token")) {
-      navigate("/");
-    }
-  }, []);
-  console.log(isAdmin);
   return (
     <>
       <header className="App-header">
@@ -80,20 +66,6 @@ function Register() {
                   type="password"
                   placeholder="Enter your Password"
                 ></Input>
-              </Form.Item>
-              <Form.Item
-                label="Are you an Admin user?"
-                htmlFor="isadmin"
-                name="isAdmin"
-                className="d-block"
-                rules={[
-                  { required: true, message: "Type of user is required" },
-                ]}
-              >
-                <Radio.Group onChange={onChange} value={isAdmin}>
-                  <Radio value={true}>Yes</Radio>
-                  <Radio value={false}>No</Radio>
-                </Radio.Group>
               </Form.Item>
               <Form.Item className="d-block">
                 <Button

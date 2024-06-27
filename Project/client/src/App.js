@@ -58,7 +58,7 @@ function App() {
             }
           />
           <Route
-            path="/book-show/:id"
+            path="/show/:id"
             element={
               <ProtectedRoute>
                 <BookShow />

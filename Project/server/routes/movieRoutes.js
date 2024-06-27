@@ -47,7 +47,6 @@ router.put("/update-movie", async (req, res) => {
       data: movie,
     });
   } catch (err) {
-    console.log(err);
     res.send({
       success: true,
       message: err.message,
