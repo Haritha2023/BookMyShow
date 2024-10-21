@@ -3,15 +3,24 @@ import { Button, Form, Input } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { LoginUser } from "../calls/users";
 import { message } from "antd";
+import { GetCurrentUser } from "../calls/users";
+import { useDispatch } from "react-redux";
+import { setUser } from "../redux/userSlice";
 
 function Login() {
+  // const { user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const onFinish = async (values) => {
     try {
       const response = await LoginUser(values);
+      console.log(values,"This is from login users")
       if (response.success) {
         message.success(response.message);
         localStorage.setItem("token", response.token);
+        const currentUserResponse = await GetCurrentUser();
+        console.log(currentUserResponse,"This is from login page")
+        dispatch(setUser(currentUserResponse.data))
         navigate("/");
       } else {
         message.error(response.message);

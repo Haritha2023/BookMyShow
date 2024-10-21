@@ -90,6 +90,7 @@ const Home = () => {
                     src={movie.poster}
                     alt="Movie Poster"
                     width={200}
+                    height={300}
                     style={{ borderRadius: "8px" }}
                   />
                   <h3

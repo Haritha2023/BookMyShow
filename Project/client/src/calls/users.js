@@ -29,8 +29,14 @@ export const LoginUser = async (value) => {
 // need to hit the userrouter at server from the frontend
 
 export const GetCurrentUser = async () => {
+  const token = localStorage.getItem("token");
+  
   try {
-    const response = await axiosInstance.get("/api/users/get-current-user");
+    const response = await axiosInstance.get("/api/users/get-current-user",{
+      headers: {
+        Authorization: `Bearer ${token}` // Attach token in headers
+      }
+    });
     return response.data;
   } catch (error) {
     console.log(error);
