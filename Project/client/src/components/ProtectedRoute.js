@@ -100,22 +100,7 @@ function ProtectedRoute({ children }) {
     }
   }, [navigate]);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      if (localStorage.getItem("token")) {
-        try {
-          const response = await GetCurrentUser();
-          dispatch(setUser(response.data));
-        } catch (error) {
-          console.log(error);
-          navigate("/login");
-        }
-      } else {
-        navigate("/login");
-      }
-    };
-    fetchUser(); // Fetch the user when the component mounts
-  }, [dispatch, navigate]);
+
   return (
     user && (
       <>
