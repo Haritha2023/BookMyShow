@@ -32,11 +32,7 @@ export const GetCurrentUser = async () => {
   const token = localStorage.getItem("token");
   
   try {
-    const response = await axiosInstance.get("/api/users/get-current-user",{
-      headers: {
-        Authorization: `Bearer ${token}` // Attach token in headers
-      }
-    });
+    const response = await axiosInstance.get("/api/users/get-current-user");
     return response.data;
   } catch (error) {
     console.log(error);

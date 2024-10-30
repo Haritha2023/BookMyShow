@@ -22,6 +22,7 @@ function ProtectedRoute({ children }) {
 
   const navItems = [
     {
+      key: "home",
       label: (
         <span
           onClick={() => {
@@ -35,6 +36,7 @@ function ProtectedRoute({ children }) {
     },
 
     {
+      key: "user",
       label: `${user ? user.name : ""}`,
       icon: <UserOutlined />,
       children: [
@@ -52,6 +54,7 @@ function ProtectedRoute({ children }) {
         },
 
         {
+          key: "logout",
           label: (
             <Link
               to="/login"
@@ -72,34 +75,26 @@ function ProtectedRoute({ children }) {
     try {
       dispatch(showLoading());
       const response = await GetCurrentUser();
+      console.log(response)
       dispatch(setUser(response.data));
       dispatch(hideLoading());
       // Hide Loader
     } catch (error) {
       dispatch(setUser(null));
       message.error(error.message);
-      navigate('/login')
+    
     }
   };
 
-  // useEffect(() => {
-  //   if (localStorage.getItem("token")) {
-  //     getValidUser();
-  //   } else {
-  //     navigate("/login");
-  //   }
-  // }, []);
-
   useEffect(() => {
     if (!localStorage.getItem("token")) {
-      // User not logged in, redirect to login
-      navigate('/login');
+      navigate("/login");
     } else {
-      // Fetch the current user if token exists
       getValidUser();
     }
-  }, [navigate]);
+  }, []);
 
+ 
 
   return (
     user && (
