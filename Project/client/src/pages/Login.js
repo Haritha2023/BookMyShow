@@ -18,9 +18,6 @@ function Login() {
       if (response.success) {
         message.success(response.message);
         localStorage.setItem("token", response.token);
-        // const currentUserResponse = await GetCurrentUser();
-        // console.log(currentUserResponse,"This is from login page")
-        // dispatch(setUser(currentUserResponse.data))
         navigate("/");
       } else {
         message.error(response.message);

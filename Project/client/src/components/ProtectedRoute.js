@@ -94,7 +94,7 @@ function ProtectedRoute({ children }) {
     }
   }, []);
 
- 
+  
 
   return (
     user && (
